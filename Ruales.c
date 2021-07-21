@@ -232,7 +232,7 @@ Fraction addAllFractions(FracCollection f) {
     return result;
 }
 
-void insertFirst(NodePtr *fracptr,Fraction f){
+void insertLinkedFirst(NodePtr *fracptr,Fraction f){
     NodePtr temp = (NodePtr)malloc(sizeof(NodeType));
 
     if(temp != NULL){
@@ -241,8 +241,19 @@ void insertFirst(NodePtr *fracptr,Fraction f){
         *fracptr = temp;
     }
 }
+s
+void insertLinkedLast(NodePtr *fracptr,Fraction f){
+	NodePtr temp = (NodePtr)malloc(sizeof(NodeType));
+	
+	if(temp!=NULL){
+		for(trav=*fracptr;trav!=NULL;trav=trav->next){}
+		temp->fracs = f;
+		temp->next = trav;
+		trav = temp;	
+	}
+}
 
-void deleteFirst(NodePtr *fracptr){
+void deleteLinkedFirst(NodePtr *fracptr){
     NodePtr temp;
     
     if(*fracptr!=NULL){
@@ -252,13 +263,24 @@ void deleteFirst(NodePtr *fracptr){
     }
 }
 
+void deleteLinkedLast(NodePtr *fracptr){
+	NodePtr temp,trav;
+	
+	if(*fracptr!=NULL){
+		for(trav=*fracptr;trav!=NULL;trav=trav->next){}
+		temp = trav;
+		free(temp);
+	}	
+}
+
+
 void insertLinkedSorted(NodePtr *fracptr, Fraction f){
     NodePtr temp = (NodePtr)malloc(sizeof(NodeType));
     NodePtr trav;
 
 
     if(temp != NULL){
-        for(trav = *fracptr; trav != NULL && trav->fracs.num >= 8; trav = trav->next){}
+        for(trav = *fracptr; trav != NULL && trav->fracs.num <= 8; trav = trav->next){}
         temp->fracs = f;
         temp->next = trav;
         trav = temp;
@@ -266,7 +288,8 @@ void insertLinkedSorted(NodePtr *fracptr, Fraction f){
 }
 
 void displayLinked(NodePtr fracptr){
-    for(;fracptr!=NULL;fracptr=fracptr->next){
-        printf("%d",fracptr->fracs.num,fracptr->fracs.num);
+	NodePtr trav;
+    for(trav=fracptr;trav!=NULL;trav=trav->next){
+        printf("%d/%d",trav->fracs.num,trav->fracs.den);
     }
 }
